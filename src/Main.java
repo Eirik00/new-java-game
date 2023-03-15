@@ -33,12 +33,12 @@ public class Main {
         //frame.setUndecorated(true);
         frame.setSize(1280,1000);
 
-        CreateCharacter createCharacter = new CreateCharacter();
-        createCharacter.view(frame);
+        //CreateCharacter createCharacter = new CreateCharacter();
+        //createCharacter.view(frame);
         //MainMenu mainMenu = new MainMenu();
         //mainMenu.mainMenuInit(frame);
-        //Game gameView = new Game();
-        //gameView.initGameView(frame);
+        Game gameView = new Game();
+        gameView.view(frame);
 
         frame.setVisible(true);
         frame.setResizable(false);
