@@ -4,13 +4,13 @@ np.set_printoptions(threshold=sys.maxsize)
 from scipy.ndimage import zoom
 mountain = np.random.uniform(size=(4,4))
 mountain = zoom(mountain, 16)
-mountain = mountain > 0.5
+mountain = mountain > 0.3
 mountain = np.where(mountain, '-', '#')
 mountain = np.array(mountain)
 #mountain = np.array_str(mountain, max_line_width=500)
 
-forrest = np.random.uniform(size=(32,32))
-forrest = zoom(forrest, 2)
+forrest = np.random.uniform(size=(16,16))
+forrest = zoom(forrest, 4)
 forrest = forrest > 0.5
 forrest = np.where(forrest, '-', 'A')
 forrest = np.array(forrest)

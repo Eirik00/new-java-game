@@ -17,11 +17,6 @@ public class Worldgen {
         InputStream inputStream = process.getInputStream();
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        String line;
-        while ((line = inputReader.readLine()) != null) {
-            System.out.println(line);
-        }
-
         // wait for the process to finish
         int exitCode = process.waitFor();
 
@@ -46,7 +41,6 @@ public class Worldgen {
                //System.out.println(data);
                 ArrayList<Tile> linedoutputWorldTile = new ArrayList<>();
                 for(String character : data.split("")){
-                    System.out.println(character);
                     switch (character) {
                         case "A" -> linedoutputWorldTile.add(tilegen.getForrest());
                         case "#" -> linedoutputWorldTile.add(tilegen.getMountain());
