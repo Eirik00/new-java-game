@@ -1,4 +1,5 @@
 import init.Worldgen;
+import object.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +17,30 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         Random rand = new Random();
 
+        Worldgen worldgen = new Worldgen();
+        worldgen.genWorld("tempworld01");
+
         JPanel background = new JPanel();
         background.setBackground(Color.black);
         background.setBounds(0,0, 960, 960);
 
         ArrayList<JPanel> objects = new ArrayList<>();
+
+        int tileY = 0;
+        for(ArrayList<Tile> lineTiles : worldgen.getWorldLayout("tempworld01")){
+            int tileX = 0;
+            for(Tile tile : lineTiles){
+                JPanel object = new JPanel(new BorderLayout());
+                object.setBounds(15*tileX,15*tileY,15,15);
+                object.setBackground(tile.getTileColor());
+                JLabel label = new JLabel(tile.getTileChar());
+                label.setBounds(15*tileX, 15*tileY, 15, 15);
+                object.add(label);
+                objects.add(object);
+                tileX++;
+            }
+            tileY++;
+        }
 
         for(int y = 0;y<64;y++){
             for(int x = 0;x<64;x++){
@@ -49,8 +69,5 @@ public class Main {
         }
         frame.setVisible(true);
         frame.repaint();
-
-        Worldgen worldgen = new Worldgen();
-        worldgen.genWorld();
     }
 }

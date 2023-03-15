@@ -1,16 +1,17 @@
 package init;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import object.Tile;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Worldgen {
 
     //generate noisemap
-    public void genWorld() throws IOException, InterruptedException {
+    public void genWorld(String worldName) throws IOException, InterruptedException {
         String pythonScriptPath = System.getProperty("user.dir") + "/src/python/worldgen.py";
-        Process process = Runtime.getRuntime().exec(new String[]{"py", pythonScriptPath, "world-map/tempworld.txt"});
+        Process process = Runtime.getRuntime().exec(new String[]{"py", pythonScriptPath, "world-map/"+worldName+".txt"});
 
         // get the input stream of the process
         InputStream inputStream = process.getInputStream();
@@ -32,5 +33,34 @@ public class Worldgen {
         }
     }
 
+    public ArrayList<ArrayList<Tile>> getWorldLayout(String worldName) {
+        try {
+            Tilegen tilegen = new Tilegen();
+            ArrayList<ArrayList<Tile>> outputWorldTile = new ArrayList<>();
+            String worldLayoutPath = System.getProperty("user.dir") + "/world-map/" + worldName + ".txt";
+            File readFile = new File(worldLayoutPath);
+            Scanner reader = new Scanner(readFile);
 
+            while(reader.hasNextLine()){
+                String data = reader.nextLine();
+               //System.out.println(data);
+                ArrayList<Tile> linedoutputWorldTile = new ArrayList<>();
+                for(String character : data.split("")){
+                    System.out.println(character);
+                    switch (character) {
+                        case "A" -> linedoutputWorldTile.add(tilegen.getForrest());
+                        case "#" -> linedoutputWorldTile.add(tilegen.getMountain());
+                        case "-" -> linedoutputWorldTile.add(tilegen.getGrass());
+                    }
+                }
+                //System.out.println(linedoutputWorldTile);
+                outputWorldTile.add(linedoutputWorldTile);
+            }
+            return outputWorldTile;
+        } catch(FileNotFoundException e){
+            System.out.println("Couldn't find that world name");
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

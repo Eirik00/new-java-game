@@ -2,8 +2,8 @@ import numpy as np
 import sys
 np.set_printoptions(threshold=sys.maxsize)
 from scipy.ndimage import zoom
-mountain = np.random.uniform(size=(8,8))
-mountain = zoom(mountain, 8)
+mountain = np.random.uniform(size=(4,4))
+mountain = zoom(mountain, 16)
 mountain = mountain > 0.5
 mountain = np.where(mountain, '-', '#')
 mountain = np.array(mountain)
