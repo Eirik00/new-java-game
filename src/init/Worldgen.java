@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Worldgen {
 
-    //generate noisemap
+    //generate noise-map
     public void genWorld(String worldName) throws IOException, InterruptedException {
         String pythonScriptPath = System.getProperty("user.dir") + "/src/python/worldgen.py";
         Process process = Runtime.getRuntime().exec(new String[]{"py", pythonScriptPath, "world-map/"+worldName+".txt"});

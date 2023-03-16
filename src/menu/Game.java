@@ -9,11 +9,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class Game {
-    public void view(JFrame frame) throws IOException, InterruptedException {
+
+    public int loadingProgress = 0;
+    public void createAndShowGUI(Consumer<Integer> progressUpdate) throws IOException, InterruptedException {
+        //Create main application
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setFont(new Font("Verdana", Font.PLAIN, 18));
+        loadingProgress = 10;
+        progressUpdate.accept(loadingProgress);
+        //frame.setUndecorated(true);
+        frame.setSize(1280,1000);
         Worldgen worldgen = new Worldgen();
         worldgen.genWorld("tempworld");
+        loadingProgress = 35;
+        progressUpdate.accept(loadingProgress);
 
         ArrayList<JPanel> objects = new ArrayList<>();
 
@@ -79,11 +93,22 @@ public class Game {
                 objects.add(object);
                 tileX++;
             }
+            loadingProgress++;
+            progressUpdate.accept(loadingProgress);
             tileY++;
         }
         //Draw map
         for(JPanel jp : objects){
             frame.add(jp);
         }
+
+
+        loadingProgress = 99;
+        progressUpdate.accept(loadingProgress);
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.repaint();
+        loadingProgress = 100;
+        progressUpdate.accept(loadingProgress);
     }
 }
