@@ -1,5 +1,7 @@
 package menu;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -16,9 +18,16 @@ public class MainMenu {
 
         JButton newGameButton = new JButton("New Game");
         newGameButton.addActionListener(e -> {
-            LoadingScreen loadingScreen = new LoadingScreen();
-            loadingScreen.createAndShowGUI();
+
             frame.dispose();
+            SwingUtilities.invokeLater(() -> {
+                CreateCharacter createCharacter = new CreateCharacter();
+                createCharacter.createAndShowGUI((characterName, characterRace) -> {
+                    LoadingScreen loadingScreen = new LoadingScreen();
+                    loadingScreen.createAndShowGUI(new Player(characterName, characterRace));
+
+                });
+            });
         });
 
         JButton loadGameButton = new JButton("Load Game");

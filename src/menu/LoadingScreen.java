@@ -1,5 +1,7 @@
 package menu;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -7,8 +9,8 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 public class LoadingScreen {
-    public void createAndShowGUI() {
-        Game game = new Game();
+    public void createAndShowGUI(Player sendPlayer) {
+        Game game = new Game(sendPlayer);
 
         JFrame frame = new JFrame("Loading");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

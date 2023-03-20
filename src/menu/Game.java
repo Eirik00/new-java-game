@@ -1,5 +1,6 @@
 package menu;
 
+import entity.Player;
 import init.Worldgen;
 import object.Tile;
 
@@ -14,6 +15,12 @@ import java.util.function.Consumer;
 public class Game {
 
     public int loadingProgress = 0;
+
+    private Player mainPlayer;
+
+    public Game(Player mainPlayer){
+        this.mainPlayer = mainPlayer;
+    }
     public void createAndShowGUI(Consumer<Integer> progressUpdate) throws IOException, InterruptedException {
         //Create main application
         JFrame frame = new JFrame();

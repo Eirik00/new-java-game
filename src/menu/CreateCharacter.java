@@ -1,16 +1,24 @@
 package menu;
 
+import entity.Player;
 import entity.race.Race;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CreateCharacter {
+    public Player mainPlayer;
     private static final Font goodFont = new Font("Verdana", Font.PLAIN, 24);
-    private ArrayList<Race> createRaces(){
+
+    public interface CharacterCreatedCallback {
+        void onCharacterCreated(String characterName, Race characterRace);
+    }
+    private Race[] createRaces(){
         ArrayList<Race> outputList = new ArrayList<>();
         Race human = new Race("Human", 0, 10);
         outputList.add(human);
@@ -18,35 +26,74 @@ public class CreateCharacter {
         outputList.add(dwarf);
         Race elf = new Race("Elf", 10, -10);
         outputList.add(elf);
+        Race[] output = new Race[outputList.size()];
+        output = outputList.toArray(output);
 
-        return outputList;
+        return output;
     }
-    public void view(JFrame frame){
-        JPanel createCharPanel = new JPanel(new GridLayout(6,1));
-        createCharPanel.setBounds(64,64,1152, 882);
-        createCharPanel.setBackground(Color.black);
+    public void createAndShowGUI(CharacterCreatedCallback callback) {
+        // Create the main JFrame
+        JFrame frame = new JFrame("Create Character");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
 
-        JPanel name = new JPanel(new GridLayout(2,1));
+        // Create a JPanel with GridBagLayout for flexible layout
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel nameTag = new JLabel("Your Name:");
-        nameTag.setForeground(Color.black);
-        name.add(nameTag);
-        JTextField nameInput = new JTextField();
-        nameInput.setFont(goodFont);
-        nameInput.setSize(600,40);
-        name.add(nameInput);
+        // Name label and input field
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel nameLabel = new JLabel("Name:");
+        panel.add(nameLabel, gbc);
 
-        JPanel race = new JPanel();
-        JLabel raceTag = new JLabel("Your Race:");
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        JTextField nameField = new JTextField(15);
+        panel.add(nameField, gbc);
 
-        JList raceSelectList = new JList(createRaces().toArray());
-        raceSelectList.setSelectedIndex(0);
-        raceSelectList.setFont(goodFont);
+        // Race label and selector
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JLabel raceLabel = new JLabel("Race:");
+        panel.add(raceLabel, gbc);
 
-        JScrollPane raceScroll = new JScrollPane(raceSelectList);
-        createCharPanel.add(name);
-        createCharPanel.add(raceTag);
-        createCharPanel.add(raceScroll);
-        frame.add(createCharPanel);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        Race[] races = createRaces();
+        JComboBox<Race> raceSelector = new JComboBox<>(races);
+        panel.add(raceSelector, gbc);
+
+        // Create character button
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        JButton createButton = new JButton("Create Character");
+        panel.add(createButton, gbc);
+
+
+        // Return Player Func
+        // Add ActionListener to the button
+        // Add ActionListener to the button
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String characterName = nameField.getText();
+                Race characterRace = (Race) raceSelector.getSelectedItem();
+
+                // Call the provided callback
+                callback.onCharacterCreated(characterName, characterRace);
+
+                frame.dispose();
+            }
+        });
+
+        // Add the panel to the main JFrame
+        frame.add(panel);
+
+        // Position the frame in the center of the screen and display it
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

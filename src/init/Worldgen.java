@@ -45,6 +45,7 @@ public class Worldgen {
                         case "A" -> linedoutputWorldTile.add(tilegen.getForrest());
                         case "#" -> linedoutputWorldTile.add(tilegen.getMountain());
                         case "-" -> linedoutputWorldTile.add(tilegen.getGrass());
+                        case "r" -> linedoutputWorldTile.add(tilegen.getRiver());
                     }
                 }
                 //System.out.println(linedoutputWorldTile);
