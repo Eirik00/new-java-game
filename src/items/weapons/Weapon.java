@@ -2,7 +2,7 @@ package items.weapons;
 
 import items.Item;
 
-public class Weapon extends Item {
+public abstract class Weapon extends Item {
 
     private int weaponDamage;
     private int weaponSpeed;
