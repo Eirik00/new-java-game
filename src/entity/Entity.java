@@ -19,6 +19,7 @@ public abstract class Entity {
         this.race = race;
         this.experience = 0;
     }
+
     public Entity(String name,  Race race) {
         this.name = name;
         this.curHealth = 100;
