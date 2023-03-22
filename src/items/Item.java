@@ -1,16 +1,16 @@
 package items;
 
 public abstract class Item {
-    private String description;
     private int value;
 
-    public Item(String description, int value) {
-        this.description = description;
-        this.value = value;
+    public abstract String getDiscription();
+    @Override
+    public String toString() {
+        return getDiscription();
     }
 
-    public String getDescription() {
-        return description;
+    public Item(int value) {
+        this.value = value;
     }
 
     public int getValue() {

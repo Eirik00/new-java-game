@@ -27,6 +27,7 @@ public abstract class Entity {
         this.agility = getRace().getBaseAgility();
         this.birth = birth;
     }
+
     public Entity(String name,  Race race) {
         this.name = name;
         this.curHealth = 100;

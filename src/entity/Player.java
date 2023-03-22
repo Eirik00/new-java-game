@@ -1,10 +1,14 @@
 package entity;
 
 import entity.race.Race;
+import items.Item;
+
+import java.util.ArrayList;
 
 import java.time.LocalDate;
 
 public class Player extends Entity {
+    private ArrayList<Item> inventory;
     public Player(String name, Race playerRace){
         super(name, playerRace);
     }

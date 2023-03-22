@@ -17,11 +17,11 @@ public class Sword extends Weapon {
         this.isCurved = isCurved;
     }
 
-    public String getSwordDescription() {
-                if (isCurved() == true) { return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
-                        + " it is a " + length + " cm long blade, the blade is curved.";}
-                else return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
-                        + " it is a " + length + " cm long blade, the blade is straight.";
+    public String getDiscription(){
+        if (isCurved() == true) { return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
+                + " it is a " + length + " cm long blade, the blade is curved.";}
+        else return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
+                + " it is a " + length + " cm long blade, the blade is straight.";
     }
 
     public String getSwordType() {
