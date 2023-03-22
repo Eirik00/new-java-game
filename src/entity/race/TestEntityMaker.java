@@ -38,7 +38,7 @@ public class TestEntityMaker {
             broAdjectives2.add(word);
         }
 
-        NPC bro = new NPC("Bro", dwarf, LocalDate.of(1920, 2, 2), broAdjectives2);
+        NPC bro = new NPC("Bro", dwarf, LocalDate.of(1907, 2, 2), broAdjectives2);
 
         System.out.println(bro.getName() + " is a " + bro.getRace() + ", he is " + bro.getEntityAge() + " years old");
 
