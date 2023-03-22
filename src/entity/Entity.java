@@ -1,11 +1,10 @@
 package entity;
 
 import entity.race.Race;
-import object.Tile;
+import object.tile.Tile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
 
 public abstract class Entity {
     private String name;

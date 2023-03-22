@@ -75,7 +75,7 @@ public class CreateCharacter {
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        JTextField nameField = new JTextField(15);
+        JTextField nameField = new JTextField("New Player", 15);
         panel.add(nameField, gbc);
 
         // Race label and selector

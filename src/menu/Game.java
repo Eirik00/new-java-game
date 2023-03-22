@@ -2,7 +2,7 @@ package menu;
 
 import entity.Player;
 import init.Worldgen;
-import object.Tile;
+import object.tile.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,18 +50,23 @@ public class Game {
 
         //Create labels
         JLabel playerName = new JLabel("Name: ");
+        playerName.setName("nameLabel");
         playerName.setForeground(Color.white);
         sideBarPlayerInfo.add(playerName);
 
         JLabel playerXp = new JLabel("LvL: ");
+        playerXp.setName("xpLabel");
         playerXp.setForeground(Color.white);
         sideBarPlayerInfo.add(playerXp);
 
+        ArrayList<ArrayList<Tile>> worldMapTiles = worldgen.getWorldLayout("tempworld");
+        // Spawn Player
+        mainPlayer.spawnPlayer(worldMapTiles, null, sideBarPlayerInfo);
+        System.out.println(mainPlayer.getWorldPosition());
 
-
-        //Generate world map tiles
+        //Draw world map tiles
         int tileY = 0;
-        for(ArrayList<Tile> lineTiles : worldgen.getWorldLayout("tempworld")){
+        for(ArrayList<Tile> lineTiles : worldMapTiles){
             int tileX = 0;
             for(Tile tile : lineTiles){
                 //Create tile
@@ -69,20 +74,35 @@ public class Game {
                 object.setBounds(15*tileX,15*tileY,15,15);
                 object.setBackground(tile.getTileColor());
 
+                Color background = tile.getTileColor();
                 object.addMouseListener(new MouseAdapter() {
-                    private Color background;
-
-
                     @Override
                     public void mouseEntered(MouseEvent e) {
-                        background = object.getBackground();
-                        object.setBackground(new Color(255,255,0));
+                        if(!tile.getSelected()){
+                            object.setBackground(new Color(255,255,0));
+                        }
                         tileType.setText("Type: "+tile.getTileName());
                     }
                     @Override
                     public void mouseExited(MouseEvent e) {
+                        if(tile.getSelected()) return;
                         object.setBackground(background);
                         tileType.setText("Type: ");
+                    }
+                    @Override
+                    public void mouseReleased(MouseEvent e){
+                        int objectIndex = 0;
+                        for(ArrayList<Tile> chcklineTiles : worldMapTiles){
+                            for(Tile chckTile : chcklineTiles){
+                                if(chckTile.getSelected()) {
+                                    chckTile.toggleSelected();
+                                    objects.get(objectIndex).setBackground(chckTile.getTileColor());
+                                }
+                                objectIndex++;
+                            }
+                        }
+                        tile.toggleSelected();
+                        object.setBackground(new Color(255, 0, 0));
                     }
                 });
                 //tile char
@@ -99,8 +119,6 @@ public class Game {
         for(JPanel jp : objects){
             frame.add(jp);
         }
-
-
         loadingProgress = 99;
         progressUpdate.accept(loadingProgress);
         frame.setVisible(true);
@@ -108,5 +126,9 @@ public class Game {
         frame.repaint();
         loadingProgress = 100;
         progressUpdate.accept(loadingProgress);
+    }
+
+    private void updatePlayerPos(){
+
     }
 }
