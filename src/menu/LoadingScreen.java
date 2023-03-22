@@ -58,9 +58,7 @@ public class LoadingScreen {
                 SwingWorker<Void, Integer> secondWorker = new SwingWorker<>() {
                     @Override
                     protected Void doInBackground() throws IOException, InterruptedException {
-                        game.createAndShowGUI(worldgen, worlprogress -> {
-                            publish(worlprogress);
-                        });
+                        game.createAndShowGUI(worldgen, this::publish);
                         return null;
                     }
 
