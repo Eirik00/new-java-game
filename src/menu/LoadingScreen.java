@@ -1,6 +1,7 @@
 package menu;
 
 import entity.Player;
+import init.Worldgen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +34,15 @@ public class LoadingScreen {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Initialize game and update progress using SwingWorker
-        SwingWorker<Void, Integer> worker = new SwingWorker<>() {
+        Worldgen worldgen = new Worldgen();
+
+        SwingWorker<Void, Integer> firstWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws IOException, InterruptedException {
-                game.createAndShowGUI(progress -> {
-                    publish(progress);
+
+                worldgen.genWorld("tempworld", worldGenProgress -> {
+                    double wgP = worldGenProgress;
+                    publish((int) Math.round(80*(wgP/100)));
                 });
                 return null;
             }
@@ -50,11 +54,31 @@ public class LoadingScreen {
 
             @Override
             protected void done() {
-                // Close loading frame after completion
-                frame.dispose();
+                // Initialize game and update progress using SwingWorker
+                SwingWorker<Void, Integer> secondWorker = new SwingWorker<>() {
+                    @Override
+                    protected Void doInBackground() throws IOException, InterruptedException {
+                        game.createAndShowGUI(worldgen, worlprogress -> {
+                            publish(worlprogress);
+                        });
+                        return null;
+                    }
+
+                    @Override
+                    protected void process(java.util.List<Integer> chunks) {
+                        progressBar.setValue(chunks.get(chunks.size() - 1));
+                    }
+
+                    @Override
+                    protected void done() {
+                        // Close loading frame after completion
+                        frame.dispose();
+                    }
+                };
+
+                secondWorker.execute();
             }
         };
-
-        worker.execute();
+        firstWorker.execute();
     }
 }
