@@ -24,7 +24,6 @@ public class Worldgen {
         // read outputs from the Python script
         String line;
         while (inputScanner.hasNextLine() && !(line = inputScanner.nextLine()).equals("EOF")) {
-            System.out.println(line);
             worldGenProgress.accept(Integer.parseInt(line));
         }
 
