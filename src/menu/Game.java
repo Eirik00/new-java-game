@@ -21,21 +21,14 @@ public class Game {
     public Game(Player mainPlayer){
         this.mainPlayer = mainPlayer;
     }
-    public void createAndShowGUI(Consumer<Integer> progressUpdate) throws IOException, InterruptedException {
+    public void createAndShowGUI(Worldgen worldgen, Consumer<Integer> progressUpdate) throws IOException, InterruptedException {
         //Create main application
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setFont(new Font("Verdana", Font.PLAIN, 18));
-        loadingProgress = 10;
-        progressUpdate.accept(loadingProgress);
         //frame.setUndecorated(true);
         frame.setSize(1280,1000);
-        Worldgen worldgen = new Worldgen();
-        worldgen.genWorld("tempworld");
-        loadingProgress = 35;
-        progressUpdate.accept(loadingProgress);
-
         ArrayList<JPanel> objects = new ArrayList<>();
 
         //Create info sideBarTileInfo
@@ -100,8 +93,6 @@ public class Game {
                 objects.add(object);
                 tileX++;
             }
-            loadingProgress++;
-            progressUpdate.accept(loadingProgress);
             tileY++;
         }
         //Draw map

@@ -4,6 +4,8 @@ import entity.race.Race;
 import object.Tile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Entity {
     private String name;
@@ -16,8 +18,10 @@ public abstract class Entity {
     private int strength;
     private int agility;
     private LocalDate birth;
+    private ArrayList adjectives;
 
-    public Entity(String name, int baseHealth, int baseAttack, Race race, int strength, int agility, LocalDate birth) {
+    public Entity(String name, int baseHealth, int baseAttack, Race race, int strength, int agility, LocalDate birth,
+                  ArrayList adjectives) {
         this.name = name;
         this.curHealth = baseHealth + agility;
         this.curAttack = baseAttack + strength;
@@ -26,6 +30,7 @@ public abstract class Entity {
         this.strength = getRace().getBaseStrength();
         this.agility = getRace().getBaseAgility();
         this.birth = birth;
+        this.adjectives = adjectives;
     }
 
     public Entity(String name,  Race race) {
@@ -37,12 +42,24 @@ public abstract class Entity {
         this.strength = getRace().getBaseStrength();
         this.agility = getRace().getBaseAgility();
         this.birth = birth;
+        this.adjectives = adjectives;
+
     }
 
-    public Entity(String name, Race race, LocalDate birth) {
+    public Entity(String name, Race race, LocalDate birth, ArrayList adjectives) {
         this.name = name;
         this.race = race;
         this.birth = birth;
+        this.adjectives = adjectives;
+    }
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public String generateEntityDescription() {
+        return this.getName() + " is " + this.getAdjectives().get(getRandomNumber(0,26)) + " in appearance, with a " +
+                this.getAdjectives().get(getRandomNumber(27, 48)) + " personality";
     }
 
     public void updateAttack(){
@@ -84,6 +101,10 @@ public abstract class Entity {
 
     public LocalDate getBirth() {
         return birth;
+    }
+
+    public ArrayList getAdjectives() {
+        return adjectives;
     }
 
     public void damageEntity(int damage, Entity from){
