@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class MainMenu {
     public void createAndShowGUI() {
-        JFrame frame = new JFrame("Game Main Menu");
+        JFrame frame = new JFrame("Game TestCreateItem Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 

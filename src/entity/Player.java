@@ -12,7 +12,7 @@ public class Player extends Entity {
     public Player(String name, Race playerRace){
         super(name, playerRace);
     }
-    public Player(String name, int startHealth, int startAttack, Race playerRace, int playerStrenght, int playerAgility, LocalDate playerBirth) {
-        super(name, startHealth, startAttack, playerRace, playerStrenght, playerAgility, playerBirth);
+    public Player(String name, int startHealth, int startAttack, Race playerRace, int playerStrenght, int playerAgility, LocalDate playerBirth, ArrayList playerAdjectives) {
+        super(name, startHealth, startAttack, playerRace, playerStrenght, playerAgility, playerBirth, playerAdjectives);
     }
 }
