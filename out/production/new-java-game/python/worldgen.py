@@ -1,8 +1,12 @@
 import numpy as np
 import sys
+import os
 from scipy.ndimage import zoom
 from skimage.graph import route_through_array
 from random import randint
+
+
+sys.stdout = os.fdopen(sys.stdout.fileno(), "w", 1)
 
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -41,17 +45,24 @@ mountain = zoom(mountain, 16)
 mountain = mountain > 0.3
 mountain = np.where(mountain, '-', '#')
 mountain = np.array(mountain)
+print(5)
+sys.stdout.flush()
 
 forest = np.random.uniform(size=(16, 16))
 forest = zoom(forest, 4)
 forest = forest > 0.5
 forest = np.where(forest, '-', 'A')
 forest = np.array(forest)
+print(10)
+sys.stdout.flush()
 
 river_map = create_river_paths((64, 64), num_rivers=5, thickness=1)
+print(15)
+sys.stdout.flush()
 
 mainMap = []
 
+progress = 15
 y = 0
 for row in forest:
     x = 0
@@ -67,15 +78,27 @@ for row in forest:
         else:
             newRow.append(mountain[y][x])
         x += 1
+    progress +=1
+    print(progress)
+    sys.stdout.flush()
     y += 1
     mainMap.append(newRow)
 
 mainMap = mainMap[:64]
 
+print(80)
+sys.stdout.flush()
 file = open(sys.argv[1], "w")
+print(90)
+sys.stdout.flush()
 for line in mainMap:
     for s in line:
         file.write(s)
     file.write("\n")
-print("Worldmap Generated")
+print(99)
+sys.stdout.flush()
 file.close()
+print(100)
+sys.stdout.flush()
+print("EOF")
+sys.stdout.flush()

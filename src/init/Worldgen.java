@@ -4,21 +4,35 @@ import object.Tile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Worldgen {
 
+    private int worldGenProgress = 0;
+
     //generate noise-map
-    public void genWorld(String worldName) throws IOException, InterruptedException {
+    public void genWorld(String worldName, Consumer<Integer> worldGenProgress) throws IOException, InterruptedException {
         String pythonScriptPath = System.getProperty("user.dir") + "/src/python/worldgen.py";
-        Process process = Runtime.getRuntime().exec(new String[]{"py", pythonScriptPath, "world-map/"+worldName+".txt"});
+        Process process = Runtime.getRuntime().exec(new String[]{"py", pythonScriptPath, "world-map/" + worldName + ".txt"});
 
         // get the input stream of the process
         InputStream inputStream = process.getInputStream();
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(inputStream));
+        Scanner inputScanner = new Scanner(inputStream);
+
+        // read outputs from the Python script
+        String line;
+        while (inputScanner.hasNextLine() && !(line = inputScanner.nextLine()).equals("EOF")) {
+            System.out.println(line);
+            worldGenProgress.accept(Integer.parseInt(line));
+        }
 
         // wait for the process to finish
         int exitCode = process.waitFor();
+
+        // close the inputScanner
+        inputScanner.close();
 
         // check the exit code to see if the process completed successfully
         if (exitCode == 0) {
