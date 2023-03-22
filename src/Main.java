@@ -7,10 +7,7 @@ public class Main {
         return (y*64)+x;
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-
-        //CreateCharacter createCharacter = new CreateCharacter();
-        //createCharacter.view(frame);
+    public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu();
         mainMenu.createAndShowGUI();
     }

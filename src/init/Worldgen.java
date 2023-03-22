@@ -1,10 +1,9 @@
 package init;
 
-import object.Tile;
+import object.tile.Tile;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -24,7 +23,6 @@ public class Worldgen {
         // read outputs from the Python script
         String line;
         while (inputScanner.hasNextLine() && !(line = inputScanner.nextLine()).equals("EOF")) {
-            System.out.println(line);
             worldGenProgress.accept(Integer.parseInt(line));
         }
 
@@ -56,10 +54,10 @@ public class Worldgen {
                 ArrayList<Tile> linedoutputWorldTile = new ArrayList<>();
                 for(String character : data.split("")){
                     switch (character) {
-                        case "A" -> linedoutputWorldTile.add(tilegen.getForrest());
-                        case "#" -> linedoutputWorldTile.add(tilegen.getMountain());
-                        case "-" -> linedoutputWorldTile.add(tilegen.getGrass());
-                        case "r" -> linedoutputWorldTile.add(tilegen.getRiver());
+                        case "A" -> linedoutputWorldTile.add(tilegen.genForrest());
+                        case "#" -> linedoutputWorldTile.add(tilegen.genMountain());
+                        case "-" -> linedoutputWorldTile.add(tilegen.genGrass());
+                        case "r" -> linedoutputWorldTile.add(tilegen.genRiver());
                     }
                 }
                 //System.out.println(linedoutputWorldTile);
