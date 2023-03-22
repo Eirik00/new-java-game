@@ -2,6 +2,7 @@ package menu;
 
 import entity.Player;
 import entity.race.Race;
+import entity.race.Religion;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,13 +19,37 @@ public class CreateCharacter {
     public interface CharacterCreatedCallback {
         void onCharacterCreated(String characterName, Race characterRace);
     }
+
+
+
     private Race[] createRaces(){
+
+
+        //Lager religioner
+        ArrayList dwarf_gods = new ArrayList<>();
+        ArrayList human_gods = new ArrayList<>();
+        ArrayList elven_gods = new ArrayList<>();
+
+        dwarf_gods.add("God of Ruby");
+        dwarf_gods.add("God of Emerald");
+        dwarf_gods.add("God of Sapphire");
+        Religion dwarven_religion = new Religion(dwarf_gods);
+
+        human_gods.add("God of Life");
+        human_gods.add("God of Death");
+        Religion human_religion = new Religion(human_gods);
+
+        elven_gods.add("God of Growth");
+        elven_gods.add("God of Harvest");
+        Religion elven_religion = new Religion(elven_gods);
+
+
         ArrayList<Race> outputList = new ArrayList<>();
-        Race human = new Race("Human", 0, 10);
+        Race human = new Race("Human", 0, 10, 20, 20, human_religion);
         outputList.add(human);
-        Race dwarf = new Race("Dwarf", -10, 20);
+        Race dwarf = new Race("Dwarf", -10, 20, 30, 10, dwarven_religion);
         outputList.add(dwarf);
-        Race elf = new Race("Elf", 10, -10);
+        Race elf = new Race("Elf", 10, -10, 10, 30, elven_religion);
         outputList.add(elf);
         Race[] output = new Race[outputList.size()];
         output = outputList.toArray(output);
