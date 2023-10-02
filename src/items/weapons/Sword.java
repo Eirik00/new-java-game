@@ -18,7 +18,7 @@ public class Sword extends Weapon {
     }
 
     public String getDiscription(){
-        if (isCurved() == true) { return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
+        if (isCurved()) { return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
                 + " it is a " + length + " cm long blade, the blade is curved.";}
         else return "This is a " + swordType + ", it is a " + bladedSides + "-sided blade,"
                 + " it is a " + length + " cm long blade, the blade is straight.";

@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -18,10 +19,15 @@ public class Game {
 
     private Player mainPlayer;
 
+    private boolean updateMap = true;
+
     public Game(Player mainPlayer){
         this.mainPlayer = mainPlayer;
     }
     public void createAndShowGUI(Worldgen worldgen, Consumer<Integer> progressUpdate) throws IOException, InterruptedException {
+        ArrayList<ArrayList<Tile>> worldMapTiles = worldgen.getWorldLayout("tempworld");
+        final Tile[] activeTile = {null};
+
         //Create main application
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +48,10 @@ public class Game {
         tileType.setForeground(Color.white);
         sideBarTileInfo.add(tileType);
 
+        JLabel tileSelected = new JLabel("Selected Tile: ");
+        tileSelected.setForeground(Color.white);
+        sideBarTileInfo.add(tileSelected);
+
         //Create info sideBarPlayerInfo
         JPanel sideBarPlayerInfo = new JPanel(new GridLayout(6,1));
         sideBarPlayerInfo.setBounds(980,280, 260, 240);
@@ -59,7 +69,29 @@ public class Game {
         playerXp.setForeground(Color.white);
         sideBarPlayerInfo.add(playerXp);
 
-        ArrayList<ArrayList<Tile>> worldMapTiles = worldgen.getWorldLayout("tempworld");
+        //Create actionbuttons panel
+        JPanel actionButtons = new JPanel(new GridLayout(3,3));
+        actionButtons.setBounds(980,540,260,240);
+        actionButtons.setBackground(Color.black);
+        frame.add(actionButtons);
+
+        //Create actionbuttons
+        JButton travelButton = new JButton("Travel");
+        travelButton.setEnabled(false);
+        travelButton.addActionListener(e -> {
+            if(activeTile[0] != null) {
+                mainPlayer.travelPlayer(worldMapTiles, activeTile[0]);
+                System.out.println("Travel Button Clicked");
+            }
+        });
+        actionButtons.add(travelButton);
+
+        JButton inventoryButton = new JButton("Inventory");
+        inventoryButton.addActionListener(e ->{
+
+        });
+        actionButtons.add(inventoryButton);
+
         // Spawn Player
         mainPlayer.spawnPlayer(worldMapTiles, null, sideBarPlayerInfo);
         System.out.println(mainPlayer.getWorldPosition());
@@ -69,6 +101,9 @@ public class Game {
         for(ArrayList<Tile> lineTiles : worldMapTiles){
             int tileX = 0;
             for(Tile tile : lineTiles){
+                tile.setTileX(tileX);
+                tile.setTileY(tileY);
+
                 //Create tile
                 JPanel object = new JPanel(new BorderLayout());
                 object.setBounds(15*tileX,15*tileY,15,15);
@@ -91,6 +126,7 @@ public class Game {
                     }
                     @Override
                     public void mouseReleased(MouseEvent e){
+                        System.out.println(tile.getTileX() + " : " + tile.getTileY());
                         int objectIndex = 0;
                         for(ArrayList<Tile> chcklineTiles : worldMapTiles){
                             for(Tile chckTile : chcklineTiles){
@@ -102,7 +138,10 @@ public class Game {
                             }
                         }
                         tile.toggleSelected();
+                        activeTile[0] = tile;
                         object.setBackground(new Color(255, 0, 0));
+                        tileSelected.setText("Selected Type: "+tile.getTileName());
+                        travelButton.setEnabled(mainPlayer.canPlayerTravel(tile));
                     }
                 });
                 //tile char
@@ -126,6 +165,26 @@ public class Game {
         frame.repaint();
         loadingProgress = 100;
         progressUpdate.accept(loadingProgress);
+
+        //map updater
+        new Thread(() -> {
+            while(updateMap){
+                frame.revalidate();
+                frame.repaint();
+                for(ArrayList<Tile> tilelist : worldMapTiles){
+                    for(Tile tile : tilelist){
+                        if(tile.getHasPlayer()){
+                            System.out.println("player pos: " + tile.getTileX() + " : " + tile.getTileY());
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
     private void updatePlayerPos(){
