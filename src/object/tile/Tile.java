@@ -5,6 +5,8 @@ import entity.Player;
 import java.awt.*;
 
 public abstract class Tile {
+    private int tileX;
+    private int tileY;
     private String tileName;
     private Color tileRootColor;
     private Color tileColor;
@@ -51,5 +53,17 @@ public abstract class Tile {
             this.tileColor = tileRootColor;
             this.tileChar = tileRootChar;
         }
+    }
+    public void setTileX(int tileX){
+        this.tileX = tileX;
+    }
+    public void setTileY(int tileY){
+        this.tileY = tileY;
+    }
+    public int getTileX(){
+        return tileX;
+    }
+    public int getTileY(){
+        return tileY;
     }
 }
