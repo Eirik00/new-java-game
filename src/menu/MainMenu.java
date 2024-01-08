@@ -42,8 +42,7 @@ public class MainMenu {
             System.exit(0);
         });
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridx = gbc.gridy = 0;
         panel.add(newGameButton, gbc);
 
         gbc.gridy = 1;

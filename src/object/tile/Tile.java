@@ -12,6 +12,8 @@ public abstract class Tile {
     private String tileChar;
     private Boolean selected;
     private Boolean hasPlayer;
+    private int tilePosX;
+    private int tilePosY;
 
     public Tile(String tileName, Color tileColor, String tileChar){
         this.tileName = tileName;
@@ -21,6 +23,18 @@ public abstract class Tile {
         this.hasPlayer = false;
         this.tileRootColor = tileColor;
         this.tileRootChar = tileChar;
+    }
+
+
+    public void setPosition(int x, int y){
+        tilePosX = x;
+        tilePosY = y;
+    }
+    public int[] getPos(){
+        int[] position = new int[2];
+        position[0] = tilePosX;
+        position[1] = tilePosY;
+        return position;
     }
 
     public String getTileName() {
